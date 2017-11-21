@@ -9,6 +9,10 @@ public class ContactSimpleDAO implements ContactDAO
 {
     private final List<Contact> contacts = new ArrayList<Contact>();
 
+    Contact c1 = new Contact("Roman","Fotor","+38-066-789-45-46","romanfotor@gmail.com");
+    Contact c2 = new Contact("Petro", "Natus", "+38-098-147-25-89", "natuspe@gmail.com");
+    Contact c3 = new Contact("Stepan", "Hmara", "+38-095-668-94-51", "stephm@gmail.com");
+
     @Override
     public Long addContact(Contact contact) {
         Long id = generateContactId();

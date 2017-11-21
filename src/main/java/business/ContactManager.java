@@ -6,7 +6,7 @@ import dao.ContactDAO;
 import dao.ContactDAOFactory;
 
 public class ContactManager {
-    private ContactDAO dao;
+    private static ContactDAO dao;
 
     public ContactManager() {
         dao = ContactDAOFactory.getContactDAO();
@@ -24,7 +24,7 @@ public class ContactManager {
         dao.deleteContact(contactId);
     }
 
-    public Contact getContact(Long contactId) {
+    public static Contact getContact(Long contactId) {
         return dao.getContact(contactId);
     }
 
