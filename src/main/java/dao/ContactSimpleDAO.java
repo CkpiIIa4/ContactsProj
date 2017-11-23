@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ContactSimpleDAO implements ContactDAO
+public final class ContactSimpleDAO implements ContactDAO
 {
-    private final List<Contact> contacts = new ArrayList<Contact>();
+    private final List<Contact> contacts = new ArrayList<>();
 
-    Contact c1 = new Contact("Roman","Fotor","+38-066-789-45-46","romanfotor@gmail.com");
-    Contact c2 = new Contact("Petro", "Natus", "+38-098-147-25-89", "natuspe@gmail.com");
-    Contact c3 = new Contact("Stepan", "Hmara", "+38-095-668-94-51", "stephm@gmail.com");
+    // Прямо в конструкторе добавляем три контакта
+    public ContactSimpleDAO() {
+        addContact(new Contact("Андрей", "Соколов", "+7-911-890-7766", "sokolov@yandex.ru"));
+        addContact(new Contact("Сергей", "Иванов", "+7-911-890-7755", "ivanov@google.com"));
+        addContact(new Contact("Татьяна", "Семенова", "+7-911-890-1164", "semenova@mail.ru"));
+    }
 
     @Override
     public Long addContact(Contact contact) {
@@ -24,7 +27,7 @@ public class ContactSimpleDAO implements ContactDAO
     @Override
     public void updateContact(Contact contact) {
         Contact oldContact = getContact(contact.getContactId());
-        if(oldContact != null){
+        if(oldContact != null) {
             oldContact.setFirstName(contact.getFirstName());
             oldContact.setLastName(contact.getLastName());
             oldContact.setPhone(contact.getPhone());
@@ -33,7 +36,6 @@ public class ContactSimpleDAO implements ContactDAO
     }
 
     @Override
-
     public void deleteContact(Long contactId) {
         for(Iterator<Contact> it = contacts.iterator(); it.hasNext();) {
             Contact cnt = it.next();

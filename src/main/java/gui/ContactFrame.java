@@ -2,6 +2,7 @@ package gui;
 
 import business.ContactManager;
 import entity.Contact;
+import exception.ContactBusinessException;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,120 +20,130 @@ import javax.swing.ListSelectionModel;
 
 public class ContactFrame extends JFrame implements ActionListener
 {
-   private static final String LOAD = "LOAD";
-   private static final String ADD = "ADD";
-   private static final String EDIT = "EDIT";
-   private static final String DELETE = "DELETE";
+    private static final String FRAME = "frame";
+    private static final String C_REFRESH = "refresh";
+    private static final String C_ADD = "add";
+    private static final String C_UPDATE = "update";
+    private static final String C_DELETE = "delete";
 
-   private final ContactManager contactManager = new ContactManager();
-   private final JTable contactTable = new JTable();
+    private static final String LOAD = "LOAD";
+    private static final String ADD = "ADD";
+    private static final String EDIT = "EDIT";
+    private static final String DELETE = "DELETE";
 
-   public ContactFrame() {
-       contactTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-       GridBagLayout gridbag = new GridBagLayout();
-       GridBagConstraints gbc = new GridBagConstraints();
+    private final ContactManager contactManager = new ContactManager();
+    private final JTable contactTable = new JTable();
 
-       gbc.gridwidth = GridBagConstraints.REMAINDER;
-       gbc.fill = GridBagConstraints.BOTH;
-       gbc.insets = new Insets(5,5,0,5);
+    public ContactFrame() {
+        contactTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
-       JPanel btnPanel = new JPanel();
-       btnPanel.setLayout(gridbag);
+        GridBagLayout gridbag = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(5, 5, 0, 5);
 
-       btnPanel.add(createButton(gridbag, gbc, "Update", LOAD));
-       btnPanel.add(createButton(gridbag, gbc, "Add", ADD));
-       btnPanel.add(createButton(gridbag, gbc, "Edit", EDIT));
-       btnPanel.add(createButton(gridbag, gbc, "Delete", DELETE));
 
-       JPanel left = new JPanel();
-       left.setLayout(new BorderLayout());
-       left.add(btnPanel, BorderLayout.NORTH);
-       add(left, BorderLayout.WEST);
+        JPanel btnPanel = new JPanel();
+        btnPanel.setLayout(gridbag);
+        btnPanel.add(createButton(gridbag, gbc, GuiResource.getLabel(FRAME, C_REFRESH), LOAD));
+        btnPanel.add(createButton(gridbag, gbc, GuiResource.getLabel(FRAME, C_ADD), ADD));
+        btnPanel.add(createButton(gridbag, gbc, GuiResource.getLabel(FRAME, C_UPDATE), EDIT));
+        btnPanel.add(createButton(gridbag, gbc, GuiResource.getLabel(FRAME, C_DELETE), DELETE));
 
-       add(new JScrollPane(contactTable), BorderLayout.CENTER);
 
-       setBounds(100, 200, 900, 400);
-       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       loadContact();
+        JPanel left = new JPanel();
+        left.setLayout(new BorderLayout());
+        left.add(btnPanel, BorderLayout.NORTH);
+        add(left, BorderLayout.WEST);
 
-   }
+        add(new JScrollPane(contactTable), BorderLayout.CENTER);
 
-   private JButton createButton(GridBagLayout gridbag, GridBagConstraints gbc, String title, String action) {
-       JButton button = new JButton(title);
+        setBounds(100, 200, 900, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-       button.setActionCommand(action);
-       button.addActionListener(this);
-       gridbag.setConstraints(button, gbc);
-       return button;
-   }
+        try {
+            loadContact();
+        } catch (ContactBusinessException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private JButton createButton(GridBagLayout gridbag, GridBagConstraints gbc, String title, String action) {
+        JButton button = new JButton(title);
+        button.setActionCommand(action);
+        button.addActionListener(this);
+        gridbag.setConstraints(button, gbc);
+        return button;
+    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-
-       String action = ae.getActionCommand();
-
-       switch (action){
-           case LOAD:
-               loadContact();
-               break;
-           case ADD:
-               addContact();
-               break;
-           case EDIT:
-               editContact();
-               break;
-           case DELETE:
-               deleteContact();
-               break;
-       }
+        String action = ae.getActionCommand();
+        try {
+            switch (action) {
+                case LOAD:
+                    loadContact();
+                    break;
+                case ADD:
+                    addContact();
+                    break;
+                case EDIT:
+                    editContact();
+                    break;
+                case DELETE:
+                    deleteContact();
+                    break;
+            }
+        } catch (ContactBusinessException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
-    private void loadContact() {
-       List<Contact> contacts = contactManager.findContacts();
-       ContactModel cm = new ContactModel(contacts);
-       contactTable.setModel(cm);
+    // Загрухить список контактов
+    private void loadContact() throws ContactBusinessException {
+        List<Contact> contacts = contactManager.findContacts();
+        ContactModel cm = new ContactModel(contacts);
+        contactTable.setModel(cm);
     }
 
-    private void addContact() {
-       EditContactDialog ecd = new EditContactDialog();
-       saveContact(ecd);
+    private void addContact() throws ContactBusinessException {
+        EditContactDialog ecd = new EditContactDialog();
+        saveContact(ecd);
     }
 
-    private void editContact() {
+    private void editContact() throws ContactBusinessException {
         int sr = contactTable.getSelectedRow();
         if (sr != -1) {
             Long id = Long.parseLong(contactTable.getModel().getValueAt(sr, 0).toString());
             Contact cnt = contactManager.getContact(id);
-            EditContactDialog ecd = new EditContactDialog(ContactManager.getContact(id));
+            EditContactDialog ecd = new EditContactDialog(contactManager.getContact(id));
             saveContact(ecd);
         } else {
-            JOptionPane.showMessageDialog(this, "You have to select the row for editing");
+            JOptionPane.showMessageDialog(this, "Вы должны выделить строку для редактирования");
         }
     }
 
-       private void saveContact(EditContactDialog ecd) {
-           if (ecd.isSave()) {
-               Contact cnt = ecd.getContact();
-               if(cnt.getContactId() != null) {
-                   contactManager.updateContact(cnt);
-               } else {
-                   contactManager.addContact(cnt);
-               }
-               loadContact();
-           }
-     }
+    private void deleteContact() throws ContactBusinessException {
+        int sr = contactTable.getSelectedRow();
+        if (sr != -1) {
+            Long id = Long.parseLong(contactTable.getModel().getValueAt(sr, 0).toString());
+            contactManager.deleteContact(id);
+            loadContact();
+        } else {
+            JOptionPane.showMessageDialog(this, "Вы должны выделить строку для удаления");
+        }
+    }
 
-     private void deleteContact() {
-       int sr = contactTable.getSelectedRow();
-       if (sr != -1) {
-           Long id = Long.parseLong(contactTable.getModel().getValueAt(sr, 0).toString());
-           contactManager.deleteContact(id);
-           loadContact();
-       } else {
-           JOptionPane.showMessageDialog(this, "You have to select the row for deleting");
-       }
-
-
-     }
-
+    private void saveContact(EditContactDialog ecd) throws ContactBusinessException {
+        if (ecd.isSave()) {
+            Contact cnt = ecd.getContact();
+            if (cnt.getContactId() != null) {
+                contactManager.updateContact(cnt);
+            } else {
+                contactManager.addContact(cnt);
+            }
+            loadContact();
+        }
+    }
 }

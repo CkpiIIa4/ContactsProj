@@ -13,97 +13,97 @@ import javax.swing.SwingConstants;
 
 public class EditContactDialog extends JDialog implements ActionListener
 {
-   private static final String SAVE = "Save";
-   private static final String CANCEL = "Cancel";
+    private static final String SAVE = "SAVE";
+    private static final String CANCEL = "CANCEL";
 
-   private static final int PAD = 10;
-   private static final int W_L = 100;
-   private static final int W_T = 300;
-   private static final int W_B = 120;
-   private static final int H_B = 25;
+    private static final int PAD = 10;
+    private static final int W_L = 100;
+    private static final int W_T = 300;
+    private static final int W_B = 120;
+    private static final int H_B = 25;
 
-   private final JTextPane txtFirstName = new JTextPane();
-   private final JTextPane txtLastName = new JTextPane();
-   private final JTextPane txtPhone = new JTextPane();
-   private final JTextPane txtEmail = new JTextPane();
+    private final JTextPane txtFirstName = new JTextPane();
+    private final JTextPane txtLastName = new JTextPane();
+    private final JTextPane txtPhone = new JTextPane();
+    private final JTextPane txtEmail = new JTextPane();
 
-   private Long contactId = null;
-   private boolean save = false;
+    private Long contactId = null;
+    private boolean save = false;
 
-   public EditContactDialog() {
-       this(null);
-   }
+    public EditContactDialog() {
+        this(null);
+    }
 
-   public EditContactDialog(Contact contact) {
-       setLayout(null);
+    public EditContactDialog(Contact contact) {
+        setLayout(null);
 
-       buildFields();
-       initFields(contact);
-       buildButtons();
+        buildFields();
+        initFields(contact);
+        buildButtons();
 
-       setModal(true);
-       setResizable(false);
-       setBounds(300, 300, 450, 200);
-       setVisible(true);
-   }
+        setModal(true);
+        setResizable(false);
+        setBounds(300, 300, 450, 200);
+        setVisible(true);
+    }
 
-   private void buildFields() {
-       JLabel lblFirstName = new JLabel("Name: ");
-       lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
-       lblFirstName.setBounds(new Rectangle(PAD, 0 * H_B + PAD, W_L, H_B));
-       add(lblFirstName);
-       txtFirstName.setBounds(new Rectangle(W_L + 2 * PAD, 0 * H_B + PAD, W_T, H_B));
-       txtFirstName.setBorder(BorderFactory.createEtchedBorder());
-       add(txtFirstName);
+    private void buildFields() {
+        JLabel lblFirstName = new JLabel("Имя:");
+        lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblFirstName.setBounds(new Rectangle(PAD, 0 * H_B + PAD, W_L, H_B));
+        add(lblFirstName);
+        txtFirstName.setBounds(new Rectangle(W_L + 2 * PAD, 0 * H_B + PAD, W_T, H_B));
+        txtFirstName.setBorder(BorderFactory.createEtchedBorder());
+        add(txtFirstName);
 
-       JLabel lblLastName = new JLabel ("LastName: ");
-       lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
-       lblLastName.setBounds(new Rectangle(PAD, 1 * H_B + PAD, W_L, H_B));
-       add(lblLastName);
-       txtLastName.setBounds(new Rectangle(W_L + 2 * PAD, 1 * H_B + PAD, W_T, H_B));
-       txtLastName.setBorder(BorderFactory.createEtchedBorder());
-       add(txtLastName);
+        JLabel lblLastName = new JLabel("Фамилия:");
+        lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblLastName.setBounds(new Rectangle(PAD, 1 * H_B + PAD, W_L, H_B));
+        add(lblLastName);
+        txtLastName.setBounds(new Rectangle(W_L + 2 * PAD, 1 * H_B + PAD, W_T, H_B));
+        txtLastName.setBorder(BorderFactory.createEtchedBorder());
+        add(txtLastName);
 
-       JLabel lblPhone = new JLabel ("Phone: ");
-       lblPhone.setHorizontalAlignment(SwingConstants.RIGHT);
-       lblPhone.setBounds(new Rectangle(PAD, 2 * H_B + PAD, W_L, H_B));
-       add(lblPhone);
-       txtPhone.setBounds(new Rectangle(W_L + 2 + PAD, 2 * H_B + PAD, W_T, H_B));
-       txtPhone.setBorder(BorderFactory.createEtchedBorder());
-       add(txtPhone);
+        JLabel lblPhone = new JLabel("Телефон:");
+        lblPhone.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblPhone.setBounds(new Rectangle(PAD, 2 * H_B + PAD, W_L, H_B));
+        add(lblPhone);
+        txtPhone.setBounds(new Rectangle(W_L + 2 * PAD, 2 * H_B + PAD, W_T, H_B));
+        txtPhone.setBorder(BorderFactory.createEtchedBorder());
+        add(txtPhone);
 
-       JLabel lblEmail = new JLabel ("Email: ");
-       lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-       lblEmail.setBounds(new Rectangle(PAD, 3 * H_B + PAD, W_L, H_B));
-       add(lblEmail);
-       txtEmail.setBounds(new Rectangle(W_L + 2 + PAD, 3 * H_B + PAD, W_T, H_B));
-       txtEmail.setBorder(BorderFactory.createEtchedBorder());
-       add(txtEmail);
-   }
+        JLabel lblEmail = new JLabel("Email:");
+        lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblEmail.setBounds(new Rectangle(PAD, 3 * H_B + PAD, W_L, H_B));
+        add(lblEmail);
+        txtEmail.setBounds(new Rectangle(W_L + 2 * PAD, 3 * H_B + PAD, W_T, H_B));
+        txtEmail.setBorder(BorderFactory.createEtchedBorder());
+        add(txtEmail);
+    }
 
-   private void initFields(Contact contact) {
-       if (contact != null) {
-           contactId = contact.getContactId();
-           txtFirstName.setText(contact.getFirstName());
-           txtLastName.setText(contact.getLastName());
-           txtPhone.setText(contact.getPhone());
-           txtEmail.setText(contact.getEmail());
-       }
-   }
+    private void initFields(Contact contact) {
+        if (contact != null) {
+            contactId = contact.getContactId();
+            txtFirstName.setText(contact.getFirstName());
+            txtLastName.setText(contact.getLastName());
+            txtEmail.setText(contact.getEmail());
+            txtPhone.setText(contact.getPhone());
+        }
+    }
 
-   private void buildButtons() {
-       JButton btnSave = new JButton("SAVE");
-       btnSave.setActionCommand(SAVE);
-       btnSave.addActionListener(this);
-       btnSave.setBounds(new Rectangle(PAD, 5 * H_B + PAD, W_B, H_B));
-       add(btnSave);
+    private void buildButtons() {
+        JButton btnSave = new JButton("SAVE");
+        btnSave.setActionCommand(SAVE);
+        btnSave.addActionListener(this);
+        btnSave.setBounds(new Rectangle(PAD, 5 * H_B + PAD, W_B, H_B));
+        add(btnSave);
 
-       JButton btnCancel = new JButton("CANCEL");
-       btnCancel.setActionCommand(CANCEL);
-       btnCancel.addActionListener(this);
-       btnCancel.setBounds(new Rectangle(W_B + 2 * PAD, 5 * H_B + PAD, W_B, H_B));
-       add(btnCancel);
-   }
+        JButton btnCancel = new JButton("CANCEL");
+        btnCancel.setActionCommand(CANCEL);
+        btnCancel.addActionListener(this);
+        btnCancel.setBounds(new Rectangle(W_B + 2 * PAD, 5 * H_B + PAD, W_B, H_B));
+        add(btnCancel);
+    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -113,11 +113,12 @@ public class EditContactDialog extends JDialog implements ActionListener
     }
 
     public boolean isSave() {
-       return save;
+        return save;
     }
 
     public Contact getContact() {
-       Contact contact = new Contact(contactId, txtFirstName.getText(), txtLastName.getText(), txtPhone.getText(), txtEmail.getText());
-       return contact;
+        Contact contact = new Contact(contactId, txtFirstName.getText(),
+                txtLastName.getText(), txtPhone.getText(), txtEmail.getText());
+        return contact;
     }
 }

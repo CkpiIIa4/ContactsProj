@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 public class ContactModel extends AbstractTableModel
 {
-    private static final String[] headers = {"ID", "Name", "Surname", "Email", "Phone number"};
+    private static final String[] headers = {"ID", "firstName", "lastName", "email", "phone"};
 
     private final List<Contact> contacts;
 
@@ -25,15 +25,15 @@ public class ContactModel extends AbstractTableModel
     }
 
     @Override
-    public String getColumnName(int column) {
-        return headers[column];
+    public String getColumnName(int col) {
+        return headers[col];
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int column) {
-        Contact contact = contacts.get(rowIndex);
-        switch (column) {
-            case  0:
+    public Object getValueAt(int row, int col) {
+        Contact contact = contacts.get(row);
+        switch (col) {
+            case 0:
                 return contact.getContactId().toString();
             case 1:
                 return contact.getFirstName();
