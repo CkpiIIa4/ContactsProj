@@ -1,5 +1,6 @@
 package database;
 
+import exception.MySQLJDBCException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -9,12 +10,12 @@ import java.sql.*;
 public class SimpleDb extends Component {
     static final Logger logger = LogManager.getLogger(SimpleDb.class);
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, MySQLJDBCException {
         SimpleDb m = new SimpleDb();
         m.testDatabase();
     }
 
-    private void testDatabase() throws ClassNotFoundException {
+    private void testDatabase() throws ClassNotFoundException, MySQLJDBCException {
         Connection con = null;
         try {
             Class.forName("org.postgresql.Driver");
@@ -32,8 +33,8 @@ public class SimpleDb extends Component {
             //delete(con, 11);
             //deleteByName(con,"Ivan");
             //deleteAfter(con, 14);
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+        } catch (SQLException se) {
+            throw new MySQLJDBCException(se);
         } finally {
             try {
                 con.close();
