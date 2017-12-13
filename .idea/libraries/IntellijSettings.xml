@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="IntellijSettings">
+    <ANNOTATIONS>
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/logging/apache-log4j-2.10.0-src/src/ide/Intellij/13/IntellijSettings.jar!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/logging/apache-log4j-2.10.0-src/src/ide/Intellij/13/IntellijSettings.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/logging/apache-log4j-2.10.0-src/src/ide/Intellij/13/IntellijSettings.jar!/" />
+    </JAVADOC>
+    <NATIVE>
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/logging/apache-log4j-2.10.0-src/src/ide/Intellij/13/IntellijSettings.jar!/" />
+    </NATIVE>
+    <SOURCES>
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/logging/apache-log4j-2.10.0-src/src/ide/Intellij/13/IntellijSettings.jar!/" />
+    </SOURCES>
+    <jarDirectory url="jar://$APPLICATION_HOME_DIR$/lib/logging/apache-log4j-2.10.0-src/src/ide/Intellij/13/IntellijSettings.jar!/" recursive="false" />
+    <jarDirectory url="jar://$APPLICATION_HOME_DIR$/lib/logging/apache-log4j-2.10.0-src/src/ide/Intellij/13/IntellijSettings.jar!/" recursive="false" type="SOURCES" />
+  </library>
+</component>
