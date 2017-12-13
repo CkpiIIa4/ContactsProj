@@ -1,0 +1,5 @@
+11:48:44,404  WARN main SimpleMain:divide:21 - x = 0; exception may occur
+11:48:44,404  WARN main SimpleMain:main:14 - this error is because 
+java.lang.ArithmeticException: / by zero
+	at logger.SimpleMain.divide(SimpleMain.java:23)
+	at logger.SimpleMain.main(SimpleMain.java:12)

@@ -1,59 +1,76 @@
 package database;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.awt.*;
 import java.sql.*;
 
 public class SimpleDb extends Component {
-    private String firstName;
+    static final Logger logger = LogManager.getLogger(SimpleDb.class);
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException {
         SimpleDb m = new SimpleDb();
         m.testDatabase();
     }
 
-    private void testDatabase() throws ClassNotFoundException, SQLException {
+    private void testDatabase() throws ClassNotFoundException {
+        Connection con = null;
+        try {
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://localhost:5432/contactdb";
             String login = "postgres";
             String password = "postgres";
-            Connection con = DriverManager.getConnection(url, login, password);
-            try {
-                select(con);
-                //selectrange(con, 10,14);
-                //insert(con, "Ivan", "Ishchenko", "+380663321456", "asdfs@gmail.com");
-                //updatef(con, 8,"Petro");
-                //updateall(con, "Eduard", "Babaiko", "+380987415263","babaiko@gmail.com", 3);
+            con = DriverManager.getConnection(url, login, password);
 
-                //delete(con, 11);
-                //deleteByName(con,"Ivan");
-                //deleteAfter(con, 14);
+            select(con);
+            //selectrange(con, 10,14);
+            //insert(con, "Ivan", "Ishchenko", "+380663321456", "asdfs@gmail.com");
+            //updatef(con, 8,"Petro");
+            //updateall(con, "Eduard", "Babaiko", "+380987415263","babaiko@gmail.com", 3);
 
-            } finally {
-                con.close();
-            }
-    }
-
-    private void select(Connection con) throws SQLException {
-        Statement stmt = con.createStatement();
-        try {
-
-            ResultSet rs = stmt.executeQuery("SELECT * FROM JC_CONTACT");
-            try {
-                while (rs.next()) {
-                    String str = rs.getString("contact_id") + ":" + rs.getString(2);
-                    System.out.println("Contact:" + str);
-                }
-            } finally {
-                rs.close();
-            }
+            //delete(con, 11);
+            //deleteByName(con,"Ivan");
+            //deleteAfter(con, 14);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            stmt.close();
+            try {
+                con.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
 
+    private void select(Connection con) {
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM JC_CONTACT");
+            while (rs.next()) {
+                String str = rs.getString("contact_id") + ":" + rs.getString(2);
+                System.out.println("Contact:" + str);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                stmt.close();
+                rs.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+    }
+
+}/*
+
+
     private void selectrange(Connection con, int minElement, int maxElement) throws SQLException {
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM JC_CONTACT WHERE CONTACT_ID BETWEEN '" + minElement + "' AND '" + maxElement + "'");
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM JC_CONTACT WHERE CONTACT_ID BETWEEN '" + minElement + "' AND '" + maxElement + "'");
 
         while (rs.next()) {
                 String str = rs.getString("contact_id") + ":" + rs.getArray(1);
@@ -204,3 +221,4 @@ public class SimpleDb extends Component {
         }
     }
 }
+*/
